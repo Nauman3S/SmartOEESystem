@@ -148,6 +148,10 @@ The overall SCT-013 connection assembly will look something like shown in the di
 
 ![SCTConnection](Circuit/sctWiring.jpg)
 
+The photoelectric sensor has three wires as shown below
+
+![PESConnection](Circuit/pesSch.jpg)
+
 ### Complete Circuit Diagram
 
 Here's the complete circuit diagram of the system.
@@ -166,9 +170,6 @@ Here's the complete circuit diagram of the system.
 5.  Once connected to a WiFi network, you can again access the captive portal using same URL or the IP Address from the Serial monitor.
 6.  The data is published to the MQTT Topic ```OEE/{hostname}``` while the hostname is the one which you can define in Settings page of the captive portal.
 
-The whole system is following the flowchart given below:
-
-   ![flow](Circuit/flow.png)
 
 ### Changing Timezone
 
