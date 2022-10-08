@@ -10,6 +10,7 @@ const database_1 = __importDefault(require("./database"));
 const middlewares_1 = __importDefault(require("./middlewares"));
 const routes_1 = __importDefault(require("./routes/routes"));
 const http_1 = __importDefault(require("http"));
+const path_1 = __importDefault(require("path"));
 // const mqttClient: any = connect();
 const app = (0, express_1.default)();
 const PORT = parseInt(config_1.default.PORT, 10);
@@ -19,10 +20,10 @@ const server = http_1.default.createServer(app);
 //Initialize Routes
 app.use("/api", routes_1.default);
 //Frontend Build Route
-// app.use("/", express.static(path.join(__dirname, "../../Frontend/build")));
-// app.get("/*", (_req: Request, res: Response) => {
-//   res.sendFile(path.resolve(__dirname, "../../Frontend/build/index.html"));
-// });
+app.use("/", express_1.default.static(path_1.default.join(__dirname, "../../Frontend/build")));
+app.get("/*", (_req, res) => {
+    res.sendFile(path_1.default.resolve(__dirname, "../../Frontend/build/index.html"));
+});
 //Database Connection
 (0, database_1.default)();
 //Listening to PORT
