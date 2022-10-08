@@ -1,10 +1,11 @@
 import { blue, bold, yellow } from "colors";
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import config from "./config";
 import database from "./database";
 import middlewares from "./middlewares";
 import apiRoutes from "./routes/routes";
 import http from "http";
+import path from "path";
 
 // const mqttClient: any = connect();
 
@@ -19,11 +20,11 @@ middlewares(app);
 //Initialize Routes
 app.use("/api", apiRoutes);
 //Frontend Build Route
-// app.use("/", express.static(path.join(__dirname, "../../Frontend/build")));
+app.use("/", express.static(path.join(__dirname, "../../Frontend/build")));
 
-// app.get("/*", (_req: Request, res: Response) => {
-//   res.sendFile(path.resolve(__dirname, "../../Frontend/build/index.html"));
-// });
+app.get("/*", (_req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, "../../Frontend/build/index.html"));
+});
 
 //Database Connection
 database();
