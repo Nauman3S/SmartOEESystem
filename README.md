@@ -26,6 +26,7 @@
 - [RPiClient Installation](#Installation)
 - [Circuit](#circuit)
 - [Usage](#usage)
+- [WebApp](#webapp)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
@@ -207,6 +208,24 @@ Here's the complete circuit diagram of the system.
     ![SCR8](artwork/scr8.png)
 12. **HOME** tab shows historical sensor data in a HTML table form acquired after every 5 minutes.
     ![SCR10](artwork/scr10.png)
+
+## Web App <a name="webapp"></a>
+
+[Dashboard Link: https://smartoeesystem.production.rehanshakir.com/](https://smartoeesystem.production.rehanshakir.com/)
+
+You can access the webapp with following test acccount credentials
+
+*   Email Address: `cavayin229@civikli.com`
+*   Password: `test`
+
+### Dashboard Screenshots
+
+ ![SCR11](artwork/db1.png) - Sign-in
+ ![SCR12](artwork/db2.png) - Sign-up
+ ![SCR13](artwork/db3.png) - Main Dashboard
+ ![SCR14](artwork/db4.png) - Devices Page
+ ![SCR15](artwork/db5.png) - Adding a new Device
+ ![SCR16](artwork/db6.png) - User Profile
 
 
 ## List of Components <a name = "list"></a>
