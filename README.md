@@ -236,6 +236,10 @@ Following components are used to make this project
 
 2.  [Current Sensor (SCT-013)](https://www.amazon.com/dp/B083S6YG36/ref=sspa_dk_detail_2?psc=1&pd_rd_i=B083S6YG36&pd_rd_w=lyRRH&pf_rd_p=887084a2-5c34-4113-a4f8-b7947847c308&pd_rd_wg=ARQkk&pf_rd_r=9X6KNTP47QE6X1QG8RGX&pd_rd_r=92990704-e6cd-4c90-9b74-93726cb99938&smid=A1G4TRJSF885ET&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFWVzdCSUhXNFU2VEwmZW5jcnlwdGVkSWQ9QTAxODU2MTcxQjNFVUI5M1ZTSUEwJmVuY3J5cHRlZEFkSWQ9QTA3OTA4NTcxR0ZGQ1JOQUFHSFFPJndpZGdldE5hbWU9c3BfZGV0YWlsJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==)
 
+or
+
+2.  [Current Sensor 200A](https://www.amazon.com/Current-Sensor-Transformer-Energy-Meter/dp/B0B91R55TS/ref=sr_1_1_sspa?keywords=200%2Bamp%2Bcurrent%2Btransformer&qid=1665830554&qu=eyJxc2MiOiIzLjI5IiwicXNhIjoiMS41MCIsInFzcCI6IjEuMDAifQ%3D%3D&sprefix=200amps%2Bcurrent%2B%2Caps%2C172&sr=8-1-spons&th=1)
+
 3.  [DHT22 Temperature and Humidity Sensor](https://www.amazon.com/Gowoops-Temperature-Humidity-Measurement-Raspberry/dp/B073F472JL/ref=sr_1_7?dchild=1&keywords=dht22&qid=1624855583&sr=8-7)
 
 4.  [Vibration Sensor (IMU) (MPU6050)](https://www.amazon.com/HiLetgo-MPU-6050-Accelerometer-Gyroscope-Converter/dp/B00LP25V1A/ref=sr_1_1?dchild=1&keywords=mpu6050&qid=1624855642&sr=8-1)
