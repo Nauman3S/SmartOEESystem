@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   getSensorNames,
   publishToMqtt,
@@ -71,10 +71,6 @@ const TableComponent = ({
       queryClient.invalidateQueries("getEnerygyCost");
     },
   });
-  // if (!loading) {
-
-  //   getSensorsCol();
-  // }
 
   useEffect(() => {
     const getSensorsCol = () => {
@@ -91,7 +87,7 @@ const TableComponent = ({
         {
           title: "Energy Cost x OEE",
           key: "energyCost",
-          width: "32%",
+
           render: (data, record) => {
             if (energyCost) return parseInt(data.oee) * energyCost;
 
@@ -230,7 +226,9 @@ const TableComponent = ({
                 type='primary'
                 className='tag-primary'
                 onClick={() => setEnergyModalVisible(true)}>
-                {energyCost !== 0 ? "Update Energy Cost" : "Add Energy Cost"}
+                {energyCost && energyCost !== 0
+                  ? "Update Energy Cost"
+                  : "Add Energy Cost"}
               </Button>
             }
           </>
@@ -263,11 +261,15 @@ const TableComponent = ({
         loading={modalLoading}
         title={title}
         onFinish={handleAddSensorValue}
-        initialValues={sensorValues?.data?.[title?.sensorName]}
+        initialValues={sensorsValues}
       />
 
       <Modal
-        title={energyCost !== 0 ? "Update Energy Cost" : "Add Energy Cost"}
+        title={
+          energyCost && energyCost !== 0
+            ? "Update Energy Cost"
+            : "Add Energy Cost"
+        }
         destroyOnClose={true}
         open={energyModalVisible}
         footer={null}
@@ -290,7 +292,7 @@ const TableComponent = ({
               htmlType='submit'
               loading={confirmLoading}
               style={{ alignSelf: "right" }}>
-              {energyCost !== 0 ? "Update" : "Add"}
+              {energyCost && energyCost !== 0 ? "Update" : "Add"}
             </Button>
           </Form.Item>
         </Form>
@@ -298,4 +300,4 @@ const TableComponent = ({
     </>
   );
 };
-export default memo(TableComponent);
+export default TableComponent;

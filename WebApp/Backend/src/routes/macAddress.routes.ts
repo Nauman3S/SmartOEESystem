@@ -3,8 +3,6 @@ import {
   addMacAddress,
   getAllMacAddress,
   removeMacAddress,
-  updateBtnState,
-  getButtonByMacAddress,
 } from "../controllers/macAddress.controller";
 
 const router: Router = Router();
@@ -27,19 +25,5 @@ router.get("/all", getAllMacAddress);
  * macAddress - {string}
  */
 router.patch("/remove", removeMacAddress);
-
-/**
- * Delete Macaddress of LoggedIn User
- * @body
- * macAddress - {string}
- */
-router.patch("/updateBtnState", updateBtnState);
-
-/**
- * Get Button By Macaddress
- * @body
- * macAddress - {string}
- */
-router.get("/button/:macAddress", getButtonByMacAddress);
 
 export default router;

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { User, Mqtt } from "../../models";
-import { userExists, validateEmail } from "../../helpers";
 
 /**
  * Send Dashboard counts
@@ -45,6 +44,25 @@ export const getAllUsers = async (
   try {
     const users = await User.find({ role: "client" });
     return res.status(200).json({ users });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: `INTERNAL SERVER ERROR: ${(error as Error).message}` });
+  }
+};
+
+/**
+ * Delete Users
+ * @param {Request} req - request object
+ * @param {Response} res - response object
+ */
+export const deleteUser = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    await User.findOneAndDelete({ _id: req?.body?.id });
+    return res.status(200).json({ messsage: "User Deleted!" });
   } catch (error) {
     return res
       .status(500)
@@ -108,49 +126,5 @@ export const getOneUsersMqttData = async (
     return res
       .status(500)
       .json({ message: `INTERNAL SERVER ERROR: ${(error as Error).message}` });
-  }
-};
-
-/**
- * Creates new instance of User in database
- * @param {Request} req - request object
- * @param {Response} res - response object
- */
-export const signUp = async (req: Request, res: Response) => {
-  try {
-    const {
-      fullName,
-      email,
-      password,
-    }: { fullName: string; email: string; password: string } = req?.body;
-
-    if (await userExists(email)) {
-      return res
-        .status(500)
-        .json({ message: `User already registered with this email ${email}` });
-    }
-
-    if (!(await validateEmail(email))) {
-      return res
-        .status(500)
-        .json({ message: "Please enter correct email address" });
-    }
-    const user = await User.create({
-      fullName,
-      email,
-      password,
-      role: "client",
-      clientPassword: password,
-      adminId: req?.user?._id,
-    });
-
-    user.save();
-
-    return res.status(200).json({ message: "User Signed Up Successfully" });
-  } catch (error) {
-    return res.status(500).json({
-      message: "INTERNAL SERVER ERROR",
-      error: (error as Error).message,
-    });
   }
 };
