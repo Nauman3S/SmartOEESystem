@@ -5,7 +5,7 @@ import {
   getAllUsersMacaddress,
   getAllUsersMqttData,
   getOneUsersMqttData,
-  signUp,
+  deleteUser,
 } from "../controllers/admin/admin.controller";
 
 const router: Router = Router();
@@ -21,6 +21,11 @@ router.get("/count", dashboardCounts);
 router.get("/all-users", getAllUsers);
 
 /**
+ * Get All Users
+ */
+router.patch("/delete-user", deleteUser);
+
+/**
  * Get All Users Macaddress
  */
 router.get("/all-macAddress", getAllUsersMacaddress);
@@ -34,14 +39,5 @@ router.get("/all-mqttData", getAllUsersMqttData);
  * Get All Users Mqtt Data
  */
 router.get("/mqttData", getOneUsersMqttData);
-
-/**
- * @body
- * fullName-{string}
- * email - {string}
- * password - {string}
- * role = {string}
- */
-router.post("/signUp", signUp);
 
 export default router;

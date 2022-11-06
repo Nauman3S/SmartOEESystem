@@ -1,31 +1,11 @@
-import React, { useState } from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Table,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Popconfirm,
-  message,
-} from "antd";
+import React from "react";
+import { Row, Col, Card, Table, Button, Popconfirm, message } from "antd";
 
-import {
-  adminUserSignUp,
-  deleteAdminUsers,
-  getAllUsers,
-} from "../Axios/apiFunctions";
+import { deleteUser, getAllUsers } from "../Axios/apiFunctions";
 
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 const AllUsers = () => {
-  const [visible, setVisible] = useState(false);
-
-  const [confirmLoading, setConfirmLoading] = useState(false);
-
-  const [form] = Form.useForm();
   const { loading, data } = useQuery("getAllUsers", getAllUsers);
 
   const queryClient = useQueryClient();
@@ -72,29 +52,18 @@ const AllUsers = () => {
     },
   ];
   const handleDelete = async (values) => {
-    const res = await deleteAdminUsers(values._id);
+    const res = await deleteUser(values._id);
 
     if (res.status === 200) {
       getDataMutation.mutate();
       message.success("User Deleted Successfully");
+    } else {
+      message.success(
+        "Something went wrong, please check your internet connection!"
+      );
     }
   };
 
-  const handleAddNewUser = async (values) => {
-    values.role = "client";
-    setConfirmLoading(true);
-    form.resetFields();
-
-    const res = await adminUserSignUp(values);
-
-    if (res.status === 200) {
-      getDataMutation.mutate();
-      setConfirmLoading(false);
-      setVisible(false);
-
-      message.success("New User Added Succssfully!");
-    }
-  };
   return (
     <>
       <div className='tabled'>
@@ -116,57 +85,6 @@ const AllUsers = () => {
           </Col>
         </Row>
       </div>
-      <Modal
-        title='Create New User'
-        destroyOnClose={true}
-        open={visible}
-        footer={null}
-        onCancel={() => setVisible(false)}
-        confirmLoading={confirmLoading}>
-        <Form
-          name='control-ref'
-          onFinish={handleAddNewUser}
-          labelCol={{
-            span: 8,
-          }}>
-          <Form.Item
-            name='fullName'
-            label='Client Full Name'
-            rules={[
-              {
-                required: true,
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='email'
-            label='Client Email'
-            rules={[
-              {
-                required: true,
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='password'
-            label='Password'
-            rules={[
-              {
-                required: true,
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type='primary' htmlType='submit' loading={confirmLoading}>
-              Create
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
     </>
   );
 };
