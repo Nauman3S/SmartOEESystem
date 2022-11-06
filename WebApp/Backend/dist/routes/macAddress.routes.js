@@ -19,16 +19,4 @@ router.get("/all", macAddress_controller_1.getAllMacAddress);
  * macAddress - {string}
  */
 router.patch("/remove", macAddress_controller_1.removeMacAddress);
-/**
- * Delete Macaddress of LoggedIn User
- * @body
- * macAddress - {string}
- */
-router.patch("/updateBtnState", macAddress_controller_1.updateBtnState);
-/**
- * Get Button By Macaddress
- * @body
- * macAddress - {string}
- */
-router.get("/button/:macAddress", macAddress_controller_1.getButtonByMacAddress);
 exports.default = router;

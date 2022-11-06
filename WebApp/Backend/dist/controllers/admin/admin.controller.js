@@ -9,9 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signUp = exports.getOneUsersMqttData = exports.getAllUsersMqttData = exports.getAllUsersMacaddress = exports.getAllUsers = exports.dashboardCounts = void 0;
+exports.getOneUsersMqttData = exports.getAllUsersMqttData = exports.getAllUsersMacaddress = exports.deleteUser = exports.getAllUsers = exports.dashboardCounts = void 0;
 const models_1 = require("../../models");
-const helpers_1 = require("../../helpers");
 /**
  * Send Dashboard counts
  * @param {Request} req - request object
@@ -56,6 +55,25 @@ const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.getAllUsers = getAllUsers;
 /**
+ * Delete Users
+ * @param {Request} req - request object
+ * @param {Response} res - response object
+ */
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        console.log("-======>DELETEing", req === null || req === void 0 ? void 0 : req.body);
+        yield models_1.User.findOneAndDelete({ _id: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.id });
+        return res.status(200).json({ messsage: "User Deleted!" });
+    }
+    catch (error) {
+        return res
+            .status(500)
+            .json({ message: `INTERNAL SERVER ERROR: ${error.message}` });
+    }
+});
+exports.deleteUser = deleteUser;
+/**
  * Get All Users Macaddress
  * @param {Request} req - request object
  * @param {Response} res - response object
@@ -97,9 +115,9 @@ exports.getAllUsersMqttData = getAllUsersMqttData;
  * @param {Response} res - response object
  */
 const getOneUsersMqttData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     try {
-        const mqttData = yield models_1.Mqtt.find({ macAddress: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.macAddress });
+        const mqttData = yield models_1.Mqtt.find({ macAddress: (_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.macAddress });
         return res.status(200).json({ mqttData });
     }
     catch (error) {
@@ -109,41 +127,3 @@ const getOneUsersMqttData = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getOneUsersMqttData = getOneUsersMqttData;
-/**
- * Creates new instance of User in database
- * @param {Request} req - request object
- * @param {Response} res - response object
- */
-const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
-    try {
-        const { fullName, email, password, } = req === null || req === void 0 ? void 0 : req.body;
-        if (yield (0, helpers_1.userExists)(email)) {
-            return res
-                .status(500)
-                .json({ message: `User already registered with this email ${email}` });
-        }
-        if (!(yield (0, helpers_1.validateEmail)(email))) {
-            return res
-                .status(500)
-                .json({ message: "Please enter correct email address" });
-        }
-        const user = yield models_1.User.create({
-            fullName,
-            email,
-            password,
-            role: "client",
-            clientPassword: password,
-            adminId: (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b._id,
-        });
-        user.save();
-        return res.status(200).json({ message: "User Signed Up Successfully" });
-    }
-    catch (error) {
-        return res.status(500).json({
-            message: "INTERNAL SERVER ERROR",
-            error: error.message,
-        });
-    }
-});
-exports.signUp = signUp;
