@@ -9,6 +9,16 @@ const ModalComponent = ({
   title,
   initialValues,
 }) => {
+  let val = { min: 0, max: 0 };
+
+  if (visible === true && initialValues?.length > 0) {
+    val = initialValues?.find((data) => {
+      if (data.sensorName === title.name) {
+        return { min: data.min, max: data.max };
+      }
+    });
+  }
+
   return (
     <Modal
       title={`Set Alarms for ${title?.name}`}
@@ -21,7 +31,10 @@ const ModalComponent = ({
       <Form
         name='control-ref'
         onFinish={onFinish}
-        initialValues={{ min: initialValues?.min, max: initialValues?.max }}
+        initialValues={{
+          min: val?.min ? val?.min : 0,
+          max: val?.max ? val?.max : 0,
+        }}
         labelCol={{
           span: 8,
         }}>

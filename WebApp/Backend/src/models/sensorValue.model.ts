@@ -8,27 +8,6 @@ const sensorValueSchema = new Schema<ISensorsName>(
     sensorName: { type: String },
     min: { type: Number, default: 0 },
     max: { type: Number, default: 0 },
-
-    // sensor1: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor2: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor3: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor4: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor5: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
   },
   { timestamps: true }
 );

@@ -7,26 +7,6 @@ const sensorValueSchema = new mongoose_1.Schema({
     sensorName: { type: String },
     min: { type: Number, default: 0 },
     max: { type: Number, default: 0 },
-    // sensor1: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor2: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor3: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor4: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
-    // sensor5: {
-    //   min: { type: Number, default: 0 },
-    //   max: { type: Number, default: 0 },
-    // },
 }, { timestamps: true });
 const SensorValue = (0, mongoose_1.model)("SensorValue", sensorValueSchema);
 exports.default = SensorValue;
