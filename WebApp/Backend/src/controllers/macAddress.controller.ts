@@ -12,10 +12,10 @@ export const getAllMacAddress = async (
   res: Response
 ): Promise<Response<IMacAddress>> => {
   try {
-    const macAddress = await User.findOne({
+    const macAddressess = await User.findOne({
       _id: req?.user?._id,
     }).select("macAddress");
-    return res.status(200).json({ data: macAddress });
+    return res.status(200).json({ macAddressess });
   } catch (error) {
     return res
       .status(500)
@@ -80,10 +80,7 @@ export const updateBtnState = async (req: Request, res: Response) => {
 export const removeMacAddress = async (req: Request, res: Response) => {
   try {
     let { userId }: { userId: string } = req?.body;
-    userId =
-      req?.user?.role === "admin" || req?.user?.role === "superAdmin"
-        ? userId
-        : req?.user?._id;
+    userId = req?.user?.role === "admin" ? userId : req?.user?._id;
     await User.findOneAndUpdate(
       { _id: userId },
       {

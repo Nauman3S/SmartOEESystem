@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mqtt_controller_1 = require("../controllers/mqtt.controller");
 const router = (0, express_1.Router)();
+(0, mqtt_controller_1.postToMqtt)();
 // postLogsToMqtt();
 /**
  * Publish data to Mqtt

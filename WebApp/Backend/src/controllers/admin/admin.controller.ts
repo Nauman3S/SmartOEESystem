@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, AdminUser, Mqtt } from "../../models";
+import { User, Mqtt } from "../../models";
 import { userExists, validateEmail } from "../../helpers";
 
 /**
@@ -8,18 +8,14 @@ import { userExists, validateEmail } from "../../helpers";
  * @param {Response} res - response object
  */
 export const dashboardCounts = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<Response> => {
   try {
     const users = await User.countDocuments({ role: "client" });
-    const totalAdminUsers = await AdminUser.findOne({ userId: req?.user?._id });
 
     // const adminId =
-    let macAddressCount =
-      req?.user?.role === "admin"
-        ? await User.find({ adminId: req?.user?._id }).select("macAddress")
-        : await User.find().select("macAddress");
+    let macAddressCount = await User.find().select("macAddress");
     let totalMacAddress: number = 0;
     //@ts-ignore
     macAddressCount = macAddressCount.map((mac) => {
@@ -29,9 +25,7 @@ export const dashboardCounts = async (
 
     const totalUser = await User.countDocuments();
 
-    return res
-      .status(200)
-      .json({ users, totalMacAddress, totalUser, totalAdminUsers });
+    return res.status(200).json({ users, totalMacAddress, totalUser });
   } catch (error) {
     return res
       .status(500)
@@ -49,7 +43,7 @@ export const getAllUsers = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const users = await User.find();
+    const users = await User.find({ role: "client" });
     return res.status(200).json({ users });
   } catch (error) {
     return res
@@ -64,17 +58,14 @@ export const getAllUsers = async (
  * @param {Response} res - response object
  */
 export const getAllUsersMacaddress = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const Macaddressess: any =
-      req?.user?.role === "admin"
-        ? await AdminUser.find({
-            userId: req?.user?._id,
-          }).populate("users")
-        : await User.find();
-    return res.status(200).json({ Macaddressess });
+    const macAddressess: any = await User.aggregate([
+      { $unwind: "$macAddress" },
+    ]);
+    return res.status(200).json({ macAddressess });
   } catch (error) {
     return res
       .status(500)
@@ -131,9 +122,7 @@ export const signUp = async (req: Request, res: Response) => {
       fullName,
       email,
       password,
-      role,
-    }: { fullName: string; email: string; password: string; role: string } =
-      req?.body;
+    }: { fullName: string; email: string; password: string } = req?.body;
 
     if (await userExists(email)) {
       return res
@@ -157,58 +146,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     user.save();
 
-    if (role === "client") {
-      await AdminUser.findOneAndUpdate(
-        { userId: req?.user?._id },
-        {
-          $push: { users: user?._id },
-        },
-        { upsert: true }
-      );
-    }
-
     return res.status(200).json({ message: "User Signed Up Successfully" });
-  } catch (error) {
-    return res.status(500).json({
-      message: "INTERNAL SERVER ERROR",
-      error: (error as Error).message,
-    });
-  }
-};
-/**
- * Get LoggedIn Admin Users
- * @param {Request} req - request object
- * @param {Response} res - response object
- */
-export const getAdminUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await AdminUser.findOne({ userId: req?.user?._id }).populate(
-      "users"
-    );
-    return res.status(200).json({ users });
-  } catch (error) {
-    return res.status(500).json({
-      message: "INTERNAL SERVER ERROR",
-      error: (error as Error).message,
-    });
-  }
-};
-
-/**
- * Delete User
- * @param {Request} req - request object
- * @param {Response} res - response object
- */
-export const deleteAdminUsers = async (req: Request, res: Response) => {
-  try {
-    await AdminUser.findOneAndUpdate(
-      { userId: req?.user?._id },
-      {
-        $pull: { users: req.body.userId },
-      }
-    );
-    await User.findByIdAndDelete(req?.body?.userId);
-    return res.status(200).json({ message: "User Deleted Successfully!" });
   } catch (error) {
     return res.status(500).json({
       message: "INTERNAL SERVER ERROR",

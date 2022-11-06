@@ -3,3 +3,5 @@ export { default as macAddressRoutes } from "./macAddress.routes";
 export { default as mqttRoutes } from "./mqtt.routes";
 export { default as adminRoutes } from "./admin.routes";
 export { default as countRoutes } from "./count.routes";
+export { default as sensorRoutes } from "./sensor.routes";
+export { default as energyCostRoutes } from "./energyCost.routes";

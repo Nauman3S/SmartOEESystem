@@ -6,8 +6,6 @@ import {
   getAllUsersMqttData,
   getOneUsersMqttData,
   signUp,
-  getAdminUsers,
-  deleteAdminUsers,
 } from "../controllers/admin/admin.controller";
 
 const router: Router = Router();
@@ -45,15 +43,5 @@ router.get("/mqttData", getOneUsersMqttData);
  * role = {string}
  */
 router.post("/signUp", signUp);
-
-/**
- * Get user of logged in admin
- */
-router.get("/users", getAdminUsers);
-
-/**
- * Delete User
- */
-router.patch("/user/delete", deleteAdminUsers);
 
 export default router;

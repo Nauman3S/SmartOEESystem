@@ -26,14 +26,12 @@ export interface IMacAddress extends Document, ITimestamps {
   macAddress: string[];
 }
 
-export interface IAdminUser extends Document, ITimestamps {
-  userId: Types.ObjectId;
-  user: string[];
-}
 export interface ISensorsName extends Document, ITimestamps {
-  sensor1: string;
-  sensor2: string;
-  sensor3: string;
+  sensors: string[];
+}
+
+export interface IEnergyCost extends Document, ITimestamps {
+  sensors: string[];
 }
 
 export interface IMqtt extends Document, ITimestamps {

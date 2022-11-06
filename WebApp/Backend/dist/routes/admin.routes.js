@@ -31,12 +31,4 @@ router.get("/mqttData", admin_controller_1.getOneUsersMqttData);
  * role = {string}
  */
 router.post("/signUp", admin_controller_1.signUp);
-/**
- * Get user of logged in admin
- */
-router.get("/users", admin_controller_1.getAdminUsers);
-/**
- * Delete User
- */
-router.patch("/user/delete", admin_controller_1.deleteAdminUsers);
 exports.default = router;

@@ -1,150 +1,128 @@
-// /*!
-//   =========================================================
-//   * Muse Ant Design Dashboard - v1.0.0
-//   =========================================================
-//   * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-//   * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-//   * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-//   * Coded by Creative Tim
-//   =========================================================
-//   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-// */
+import React, { useState, useEffect } from "react";
+import ReactApexChart from "react-apexcharts";
+import { Typography } from "antd";
+import { useQueryClient } from "react-query";
 
-// import ReactApexChart from "react-apexcharts";
-// import { Typography } from "antd";
-// import { MinusOutlined } from "@ant-design/icons";
-// // import lineChart from "./configs/lineChart";
-// import { useQuery } from "react-query";
-// import {
-//   getAdminUserAllMacAddress,
-//   getAdminUsers,
-// } from "../../Axios/apiFunctions";
+const LineChart = ({ selectedMacaddress, mqttData }) => {
+  const [sensors, setSensors] = useState([]);
+  const [macAddressData, setMacAddressData] = useState([]);
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(["getSensorNames"]);
 
-// function LineChart() {
-//   const { data: macAddress } = useQuery(
-//     "getAdminUserAllMacAddress",
-//     getAdminUserAllMacAddress
-//   );
-//   // const { data: macAddress } = useQuery("getAdminUsers", getAdminUsers);
-//   // console.log(macAddress?.data?.users?.users[0].createdAt);
-//   console.log(macAddress);
-//   let adminUserMacAddressess = [];
-//   macAddress?.data?.Macaddressess[0]?.users.map((data, index) => {
-//     return data.macAddress.map((mac) => {
-//       return adminUserMacAddressess.push(mac.macAddress);
-//     });
-//   });
-//   console.log(adminUserMacAddressess);
-//   const lineChart = {
-//     series: [
-//       {
-//         name: "Macaddress",
-//         data: [10, 40, 60, 80, 100, 200, 300, 400, 500],
-//         offsetY: 0,
-//       },
-//     ],
+  useEffect(() => {
+    if (selectedMacaddress) {
+      setMacAddressData(mqttData?.data?.data);
+    }
+  }, [mqttData?.data, selectedMacaddress]);
+  useEffect(() => {
+    if (data?.data) {
+      setSensors(data?.data?.[0]?.sensors);
+    }
+  }, [data]);
 
-//     options: {
-//       chart: {
-//         width: "100%",
-//         height: 350,
-//         type: "area",
-//         toolbar: {
-//           show: false,
-//         },
-//       },
+  const lineChart = {
+    series: [
+      {
+        name: "Value",
+        data: [
+          parseInt(macAddressData[macAddressData?.length - 1]?.oee),
+          parseInt(macAddressData[macAddressData?.length - 1]?.temperature),
+          parseInt(macAddressData[macAddressData?.length - 1]?.humidity),
+          parseInt(macAddressData[macAddressData?.length - 1]?.watts),
+        ],
+        offsetY: 0,
+      },
+    ],
 
-//       legend: {
-//         show: true,
-//       },
+    options: {
+      chart: {
+        width: "100%",
+        height: 350,
+        type: "area",
+        toolbar: {
+          show: false,
+        },
+      },
+      dropShadow: {
+        enabled: false,
+        enabledOnSeries: undefined,
+        top: 0,
+        left: 0,
+        blur: 3,
+        color: "#000",
+        opacity: 0.35,
+      },
+      legend: {
+        show: true,
+      },
 
-//       dataLabels: {
-//         enabled: true,
-//       },
-//       stroke: {
-//         curve: "smooth",
-//       },
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: "smooth",
+      },
 
-//       yaxis: {
-//         labels: {
-//           style: {
-//             fontSize: "14px",
-//             fontWeight: 600,
-//             colors: ["#8c8c8c"],
-//           },
-//         },
-//       },
+      yaxis: {
+        labels: {
+          style: {
+            fontSize: "14px",
+            fontWeight: 600,
+            colors: ["#8c8c8c"],
+          },
+        },
+      },
 
-//       xaxis: {
-//         labels: {
-//           style: {
-//             fontSize: "14px",
-//             fontWeight: 600,
-//             colors: [
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//               "#8c8c8c",
-//             ],
-//           },
-//         },
-//         categories: [
-//           "Feb",
-//           "Mar",
-//           "Apr",
-//           "May",
-//           "Jun",
-//           "Jul",
-//           "Aug",
-//           "Sep",
-//           "Oct",
-//         ],
-//       },
+      xaxis: {
+        labels: {
+          style: {
+            fontSize: "14px",
+            fontWeight: 600,
+            colors: ["#8c8c8c", "#8c8c9b", "#8c8c8c", "#8c8c8c"],
+          },
+        },
+        categories: sensors,
+      },
 
-//       tooltip: {
-//         y: {
-//           formatter: function (val) {
-//             return val;
-//           },
-//         },
-//       },
-//     },
-//   };
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val;
+          },
+        },
+      },
+    },
+  };
 
-//   const { Title, Paragraph } = Typography;
+  const { Title } = Typography;
 
-//   return (
-//     <>
-//       <div className='linechart'>
-//         <div>
-//           <Title level={5}>Macaddress</Title>
-//           {/* <Paragraph className="lastweek">
-//             than last week <span className="bnb2">+30%</span>
-//           </Paragraph> */}
-//         </div>
-//         <div className='sales'>
-//           <ul>
-//             <li>{<MinusOutlined />} Macaddress</li>
-//             {/* <li>{<MinusOutlined />} Sales</li> */}
-//           </ul>
-//         </div>
-//       </div>
+  return (
+    <>
+      <div className='linechart'>
+        <div>
+          <Title level={5}>{selectedMacaddress || "Macaddress"}</Title>
+          {/* <Paragraph className="lastweek">
+            than last week <span className="bnb2">+30%</span>
+          </Paragraph> */}
+        </div>
+        {/* <div className='sales'>
+          <ul>
+            <li>{<MinusOutlined />} Macaddress</li>
+            <li>{<MinusOutlined />} Sales</li>
+          </ul>
+        </div> */}
+      </div>
 
-//       <ReactApexChart
-//         className='full-width'
-//         options={lineChart.options}
-//         series={lineChart.series}
-//         type='area'
-//         height={350}
-//         width={"100%"}
-//       />
-//     </>
-//   );
-// }
+      <ReactApexChart
+        className='full-width'
+        options={lineChart.options}
+        series={lineChart.series}
+        type='area'
+        height={350}
+        width={"100%"}
+      />
+    </>
+  );
+};
 
-// export default LineChart;
+export default LineChart;

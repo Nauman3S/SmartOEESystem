@@ -20,13 +20,6 @@ import { useSelector } from "react-redux";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-// import io from "socket.io-client";
-
-// const socket = io("http://localhost:3500");
-// // const socket = io("https://smart-devices-system-backend.caprover.meetin.co.in");
-// socket.on("connect", () => {
-//   // console.log(socket.id);
-// });
 
 function RequireAuth({ children, redirectTo }) {
   let isAuthenticated = getToken();
@@ -48,24 +41,20 @@ const App = () => {
   const authState = useSelector((state) => state.auth);
 
   const LazyHome =
-    (authState.role === "admin" || authState.role === "superAdmin") &&
+    authState?.role &&
+    authState?.role === "admin" &&
     lazy(() => import("./pages/Home"));
   const LazyClientHome = lazy(() => import("./pages/ClientHome"));
-  const LazyAllUsers =
-    authState.role === "admin" && lazy(() => import("./pages/AllUsers"));
+
   const LazySignIn = lazy(() => import("./pages/SignIn"));
   const LazySignUp = lazy(() => import("./pages/SignUp"));
   const LazyProfile = lazy(() => import("./pages/Profile"));
-  // const LazyProgram = lazy(() => import("./pages/Program"));
-  // const LazyControl = lazy(() => import("./pages/Control"));
+
   const LazyMacAddress = lazy(() => import("./pages/MacAddress"));
-  // const LazyMap =
-  //   authState.role === "client" && lazy(() => import("./pages/Map"));
-  // const LazyClientData =
-  //   authState.role === "client" && lazy(() => import("./pages/ClientData"));
 
   const LazyData =
-    (authState.role === "admin" || authState.role === "superAdmin") &&
+    authState?.role &&
+    authState?.role === "admin" &&
     lazy(() => import("./pages/Data"));
 
   return (
@@ -100,43 +89,21 @@ const App = () => {
                 index
                 element={
                   <RequireAuth redirectTo='/sign-in'>
-                    {authState && authState.role === "admin" ? (
+                    {authState?.role && authState?.role === "admin" ? (
                       <LazyHome />
-                    ) : (
+                    ) : authState?.role && authState?.role === "client" ? (
                       <LazyClientHome />
+                    ) : (
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}>
+                        <Loading />
+                      </div>
                     )}
                   </RequireAuth>
                 }
               />
-              {authState && authState.role === "admin" && (
-                <Route
-                  exact
-                  path='/all-users'
-                  element={
-                    <RequireAuth redirectTo='/sign-in'>
-                      <LazyAllUsers />
-                    </RequireAuth>
-                  }
-                />
-              )}
 
-              {/* <Route
-                path='/programs'
-                element={
-                  <RequireAuth redirectTo='/sign-in'>
-                    <LazyProgram />
-                  </RequireAuth>
-                }
-              /> */}
-              {/* <Route
-                path='/controls'
-                element={
-                  <RequireAuth redirectTo='/sign-in'>
-                    <LazyControl socket={socket} />
-                  </RequireAuth>
-                }
-              /> */}
-              {authState && authState.role === "admin" && (
+              {authState?.role && authState?.role === "admin" && (
                 <Route
                   path='/data'
                   element={
@@ -154,26 +121,7 @@ const App = () => {
                   </RequireAuth>
                 }
               />
-              {/* {authState.role === "client" && (
-                <Route
-                  path='/map'
-                  element={
-                    <RequireAuth redirectTo='/sign-in'>
-                      <LazyMap />
-                    </RequireAuth>
-                  }
-                />
-              )} */}
-              {/* {authState.role === "client" && (
-                <Route
-                  path='/client/data'
-                  element={
-                    <RequireAuth redirectTo='/sign-in'>
-                      <LazyClientData />
-                    </RequireAuth>
-                  }
-                />
-              )} */}
+
               <Route
                 path='/profile'
                 element={

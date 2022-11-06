@@ -5,6 +5,8 @@ import {
   mqttRoutes,
   adminRoutes,
   countRoutes,
+  sensorRoutes,
+  energyCostRoutes,
 } from ".";
 import { isAuthenticated } from "../middlewares/auth.middleware";
 import { isAdmin } from "../middlewares/validator.middleware";
@@ -25,5 +27,11 @@ router.use("/admin", isAuthenticated, isAdmin, adminRoutes);
 
 //All Count Routes
 router.use("/count", isAuthenticated, countRoutes);
+
+//All Count Routes
+router.use("/sensor", isAuthenticated, sensorRoutes);
+
+//All Energy Cost Routes
+router.use("/energy", isAuthenticated, energyCostRoutes);
 
 export default router;

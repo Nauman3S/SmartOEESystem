@@ -118,10 +118,10 @@ export const getAllMacAddress = () =>
     },
   });
 
-export const publishToMqtt = (macAddress, message, endPoint) =>
+export const publishToMqtt = (macAddress, message) =>
   server.post(
     `/mqtt/publish/${macAddress}`,
-    { message, endPoint },
+    { message },
     {
       headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -195,14 +195,49 @@ export const getDeviceLocationsByMacAddress = (macAddress) =>
   server.post("/mqtt/location-all", { macAddress });
 
 export const getSensorNames = () =>
-  server.get("/program/sensor", {
+  server.get("/sensor", {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
 
 export const updateSensorName = (sensor) =>
-  server.post("/admin/sensor", sensor, {
+  server.patch("/sensor", sensor, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+export const removeSensorName = (sensor) =>
+  server.patch("/sensor/remove", sensor, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+export const addSensorValue = (sensor) =>
+  server.patch("/sensor/add", sensor, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+export const getEnerygyCost = () =>
+  server.get("/energy", {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+export const addEnergyCost = (energyCost) =>
+  server.patch("/energy", energyCost, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+export const getSensorValues = (macAddress) =>
+  server.get(`/sensor/get/${macAddress}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },

@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mqttSchema = new mongoose_1.Schema({
     macAddress: { type: String },
-    button: { type: String },
-    temperatureSensor: { type: String },
-    humiditySensor: { type: String },
+    oee: { type: String },
+    temperature: { type: String },
+    humidity: { type: String },
+    watts: { type: String },
 }, {
     timestamps: true,
 });

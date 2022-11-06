@@ -19,10 +19,10 @@ const models_1 = require("../models");
 const getAllMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const macAddress = yield models_1.User.findOne({
+        const macAddressess = yield models_1.User.findOne({
             _id: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id,
         }).select("macAddress");
-        return res.status(200).json({ data: macAddress });
+        return res.status(200).json({ macAddressess });
     }
     catch (error) {
         return res
@@ -82,19 +82,16 @@ exports.updateBtnState = updateBtnState;
  * @param {Request} req
  */
 const removeMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _g, _h, _j, _k, _l;
+    var _g, _h, _j, _k;
     try {
         let { userId } = req === null || req === void 0 ? void 0 : req.body;
-        userId =
-            ((_g = req === null || req === void 0 ? void 0 : req.user) === null || _g === void 0 ? void 0 : _g.role) === "admin" || ((_h = req === null || req === void 0 ? void 0 : req.user) === null || _h === void 0 ? void 0 : _h.role) === "superAdmin"
-                ? userId
-                : (_j = req === null || req === void 0 ? void 0 : req.user) === null || _j === void 0 ? void 0 : _j._id;
+        userId = ((_g = req === null || req === void 0 ? void 0 : req.user) === null || _g === void 0 ? void 0 : _g.role) === "admin" ? userId : (_h = req === null || req === void 0 ? void 0 : req.user) === null || _h === void 0 ? void 0 : _h._id;
         yield models_1.User.findOneAndUpdate({ _id: userId }, {
             $pull: {
-                macAddress: { macAddress: (_k = req === null || req === void 0 ? void 0 : req.body) === null || _k === void 0 ? void 0 : _k.macAddress },
+                macAddress: { macAddress: (_j = req === null || req === void 0 ? void 0 : req.body) === null || _j === void 0 ? void 0 : _j.macAddress },
             },
         });
-        yield models_1.Mqtt.deleteMany({ macAddress: (_l = req === null || req === void 0 ? void 0 : req.body) === null || _l === void 0 ? void 0 : _l.macAddress });
+        yield models_1.Mqtt.deleteMany({ macAddress: (_k = req === null || req === void 0 ? void 0 : req.body) === null || _k === void 0 ? void 0 : _k.macAddress });
         return res.status(200).json({ message: "MacAddress Deleted!" });
     }
     catch (error) {
@@ -110,14 +107,14 @@ exports.removeMacAddress = removeMacAddress;
  * @param {Request} req
  */
 const getButtonByMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _m, _o, _p;
+    var _l, _m, _o;
     try {
-        const data = yield models_1.Mqtt.find({ macAddress: (_m = req === null || req === void 0 ? void 0 : req.params) === null || _m === void 0 ? void 0 : _m.macAddress });
+        const data = yield models_1.Mqtt.find({ macAddress: (_l = req === null || req === void 0 ? void 0 : req.params) === null || _l === void 0 ? void 0 : _l.macAddress });
         const button = yield models_1.MacAddress.find({
-            userId: (_o = req === null || req === void 0 ? void 0 : req.user) === null || _o === void 0 ? void 0 : _o._id,
+            userId: (_m = req === null || req === void 0 ? void 0 : req.user) === null || _m === void 0 ? void 0 : _m._id,
         }, {
             deviceDetails: {
-                $elemMatch: { macAddress: (_p = req === null || req === void 0 ? void 0 : req.params) === null || _p === void 0 ? void 0 : _p.macAddress },
+                $elemMatch: { macAddress: (_o = req === null || req === void 0 ? void 0 : req.params) === null || _o === void 0 ? void 0 : _o.macAddress },
             },
         });
         return res.status(200).json({ button, data });
