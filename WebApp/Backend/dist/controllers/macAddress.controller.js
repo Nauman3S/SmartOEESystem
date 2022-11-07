@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getButtonByMacAddress = exports.removeMacAddress = exports.updateBtnState = exports.addMacAddress = exports.getAllMacAddress = void 0;
+exports.removeMacAddress = exports.addMacAddress = exports.getAllMacAddress = void 0;
 const models_1 = require("../models");
 /**
  * Get All Macaddress of LoggedIn User
@@ -54,44 +54,21 @@ const addMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.addMacAddress = addMacAddress;
 /**
- * Update Button State
- * @param {Request} req
- * @param {Request} req
- */
-const updateBtnState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d, _e, _f;
-    try {
-        yield models_1.MacAddress.findOneAndUpdate({
-            userId: (_d = req === null || req === void 0 ? void 0 : req.user) === null || _d === void 0 ? void 0 : _d._id,
-            deviceDetails: { $elemMatch: { macAddress: (_e = req === null || req === void 0 ? void 0 : req.body) === null || _e === void 0 ? void 0 : _e.macAddress } },
-        }, {
-            $set: { "deviceDetails.$.btnState": (_f = req === null || req === void 0 ? void 0 : req.body) === null || _f === void 0 ? void 0 : _f.btnState },
-        });
-        return res.status(200).json({ message: "Button Added Successfully!" });
-    }
-    catch (error) {
-        return res
-            .status(500)
-            .json({ message: `INTERNAL SERVER ERROR: ${error.message}` });
-    }
-});
-exports.updateBtnState = updateBtnState;
-/**
  * Add New Macaddress
  * @param {Request} req
  * @param {Request} req
  */
 const removeMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _g, _h, _j, _k;
+    var _d, _e, _f, _g;
     try {
         let { userId } = req === null || req === void 0 ? void 0 : req.body;
-        userId = ((_g = req === null || req === void 0 ? void 0 : req.user) === null || _g === void 0 ? void 0 : _g.role) === "admin" ? userId : (_h = req === null || req === void 0 ? void 0 : req.user) === null || _h === void 0 ? void 0 : _h._id;
+        userId = ((_d = req === null || req === void 0 ? void 0 : req.user) === null || _d === void 0 ? void 0 : _d.role) === "admin" ? userId : (_e = req === null || req === void 0 ? void 0 : req.user) === null || _e === void 0 ? void 0 : _e._id;
         yield models_1.User.findOneAndUpdate({ _id: userId }, {
             $pull: {
-                macAddress: { macAddress: (_j = req === null || req === void 0 ? void 0 : req.body) === null || _j === void 0 ? void 0 : _j.macAddress },
+                macAddress: { macAddress: (_f = req === null || req === void 0 ? void 0 : req.body) === null || _f === void 0 ? void 0 : _f.macAddress },
             },
         });
-        yield models_1.Mqtt.deleteMany({ macAddress: (_k = req === null || req === void 0 ? void 0 : req.body) === null || _k === void 0 ? void 0 : _k.macAddress });
+        yield models_1.Mqtt.deleteMany({ macAddress: (_g = req === null || req === void 0 ? void 0 : req.body) === null || _g === void 0 ? void 0 : _g.macAddress });
         return res.status(200).json({ message: "MacAddress Deleted!" });
     }
     catch (error) {
@@ -101,28 +78,3 @@ const removeMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.removeMacAddress = removeMacAddress;
-/**
- * Get Button By MacAddress
- * @param {Request} req
- * @param {Request} req
- */
-const getButtonByMacAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _l, _m, _o;
-    try {
-        const data = yield models_1.Mqtt.find({ macAddress: (_l = req === null || req === void 0 ? void 0 : req.params) === null || _l === void 0 ? void 0 : _l.macAddress });
-        const button = yield models_1.MacAddress.find({
-            userId: (_m = req === null || req === void 0 ? void 0 : req.user) === null || _m === void 0 ? void 0 : _m._id,
-        }, {
-            deviceDetails: {
-                $elemMatch: { macAddress: (_o = req === null || req === void 0 ? void 0 : req.params) === null || _o === void 0 ? void 0 : _o.macAddress },
-            },
-        });
-        return res.status(200).json({ button, data });
-    }
-    catch (error) {
-        return res
-            .status(500)
-            .json({ message: `INTERNAL SERVER ERROR: ${error.message}` });
-    }
-});
-exports.getButtonByMacAddress = getButtonByMacAddress;

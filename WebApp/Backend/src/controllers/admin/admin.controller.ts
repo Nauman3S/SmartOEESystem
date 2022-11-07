@@ -61,6 +61,7 @@ export const deleteUser = async (
   res: Response
 ): Promise<Response> => {
   try {
+    console.log("-======>DELETEing", req?.body);
     await User.findOneAndDelete({ _id: req?.body?.id });
     return res.status(200).json({ messsage: "User Deleted!" });
   } catch (error) {
