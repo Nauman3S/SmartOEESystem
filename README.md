@@ -248,7 +248,9 @@ You can access the webapp with following test acccount credentials
 
 ### MQTT Details
 
-From Device the data should be published to the topic `smartoee/data/#` in the format below
+From Device the data should be published to the topic `smartoee/data/#` in the format below:
+* Replace `#` with the device MAC Address.
+
 ```json
 {
   "macAddress": "FE064CSF",
