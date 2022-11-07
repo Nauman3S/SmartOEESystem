@@ -11,13 +11,11 @@ const mqttClient: any = connect();
 export const postToMqtt = async () => {
   try {
     mqttClient.on("message", async (topic: string, payload: any) => {
-      if (!topic.includes("/logs")) {
-        let message = JSON.parse(payload);
+      let message = JSON.parse(payload);
 
-        console.log("Received Message:", topic, message);
-        let data = await Mqtt.create(message);
-        data.save();
-      }
+      console.log("Received Message:", topic, message);
+      let data = await Mqtt.create(message);
+      data.save();
     });
     console.log("Data Saved");
   } catch (error) {
@@ -33,9 +31,7 @@ export const postToMqtt = async () => {
 export const publishToMqtt = async (req: Request, res: Response) => {
   try {
     let { message }: { message: string } = req?.body;
-    const macAddress: string = `${req?.params?.macAddress}/client/${req?.body?.endPoint}`;
-
-    // message = JSON.stringify(message);
+    const macAddress: string = `${req?.params?.macAddress}/smartoee`;
 
     mqttClient.publish(
       macAddress,

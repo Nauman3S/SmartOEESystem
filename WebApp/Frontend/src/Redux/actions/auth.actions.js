@@ -1,4 +1,4 @@
-import { SIGN_UP, SIGN_IN, LOAD_PROF, SIGN_OUT, UPDATE_PROF } from "../types";
+import { SIGN_UP, SIGN_IN, LOAD_PROF, SIGN_OUT } from "../types";
 import server from "../../Axios/index";
 import { notification } from "antd";
 import { QueryCache } from "react-query";
@@ -16,6 +16,9 @@ export const signUp = (formValues) => {
       }
       dispatch({ type: SIGN_UP });
     } catch (error) {
+      notification["error"]({
+        message: error?.response?.data?.message,
+      });
       console.log(error);
       return error;
     }

@@ -23,7 +23,6 @@ const dashboardCounts = (req, res) => __awaiter(void 0, void 0, void 0, function
             { $match: { _id: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id } },
             { $project: { macAddress: { $size: "$macAddress" } } },
         ]);
-        console.log(macAddressCount);
         return res.status(200).json({ macAddressCount: macAddressCount[0] });
     }
     catch (error) {

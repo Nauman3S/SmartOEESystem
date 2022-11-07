@@ -13,7 +13,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Layout,
-  Menu,
   Button,
   Row,
   Col,
@@ -273,7 +272,7 @@ const SignIn = () => {
       <Modal
         title='Enter OTP'
         destroyOnClose={true}
-        visible={otpModalVisible}
+        open={otpModalVisible}
         footer={null}
         onCancel={() => setOtpModalVisible(false)}
         confirmLoading={confirmLoading}>
@@ -306,7 +305,7 @@ const SignIn = () => {
       <Modal
         title='Enter New Password'
         destroyOnClose={true}
-        visible={passwordModalVisible}
+        open={passwordModalVisible}
         footer={null}
         onCancel={() => setPasswordModalVisible(false)}
         confirmLoading={confirmLoading}>

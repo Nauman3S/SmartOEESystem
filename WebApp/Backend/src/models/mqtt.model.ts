@@ -4,9 +4,10 @@ import { IMqtt } from "../types/types";
 const mqttSchema = new Schema<IMqtt>(
   {
     macAddress: { type: String },
-    button: { type: String },
-    temperatureSensor: { type: String },
-    humiditySensor: { type: String },
+    oee: { type: String },
+    temperature: { type: String },
+    humidity: { type: String },
+    watts: { type: String },
   },
   {
     timestamps: true,

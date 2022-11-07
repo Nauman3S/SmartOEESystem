@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MacAddress, User, Mqtt } from "../models";
+import { User, Mqtt } from "../models";
 import { IMacAddress } from "../types/types";
 
 /**
@@ -12,10 +12,10 @@ export const getAllMacAddress = async (
   res: Response
 ): Promise<Response<IMacAddress>> => {
   try {
-    const macAddress = await User.findOne({
+    const macAddressess = await User.findOne({
       _id: req?.user?._id,
     }).select("macAddress");
-    return res.status(200).json({ data: macAddress });
+    return res.status(200).json({ macAddressess });
   } catch (error) {
     return res
       .status(500)
@@ -49,30 +49,6 @@ export const addMacAddress = async (req: Request, res: Response) => {
 };
 
 /**
- * Update Button State
- * @param {Request} req
- * @param {Request} req
- */
-export const updateBtnState = async (req: Request, res: Response) => {
-  try {
-    await MacAddress.findOneAndUpdate(
-      {
-        userId: req?.user?._id,
-        deviceDetails: { $elemMatch: { macAddress: req?.body?.macAddress } },
-      },
-      {
-        $set: { "deviceDetails.$.btnState": req?.body?.btnState },
-      }
-    );
-    return res.status(200).json({ message: "Button Added Successfully!" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: `INTERNAL SERVER ERROR: ${(error as Error).message}` });
-  }
-};
-
-/**
  * Add New Macaddress
  * @param {Request} req
  * @param {Request} req
@@ -80,10 +56,7 @@ export const updateBtnState = async (req: Request, res: Response) => {
 export const removeMacAddress = async (req: Request, res: Response) => {
   try {
     let { userId }: { userId: string } = req?.body;
-    userId =
-      req?.user?.role === "admin" || req?.user?.role === "superAdmin"
-        ? userId
-        : req?.user?._id;
+    userId = req?.user?.role === "admin" ? userId : req?.user?._id;
     await User.findOneAndUpdate(
       { _id: userId },
       {
@@ -94,32 +67,6 @@ export const removeMacAddress = async (req: Request, res: Response) => {
     );
     await Mqtt.deleteMany({ macAddress: req?.body?.macAddress });
     return res.status(200).json({ message: "MacAddress Deleted!" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: `INTERNAL SERVER ERROR: ${(error as Error).message}` });
-  }
-};
-
-/**
- * Get Button By MacAddress
- * @param {Request} req
- * @param {Request} req
- */
-export const getButtonByMacAddress = async (req: Request, res: Response) => {
-  try {
-    const data = await Mqtt.find({ macAddress: req?.params?.macAddress });
-    const button = await MacAddress.find(
-      {
-        userId: req?.user?._id,
-      },
-      {
-        deviceDetails: {
-          $elemMatch: { macAddress: req?.params?.macAddress },
-        },
-      }
-    );
-    return res.status(200).json({ button, data });
   } catch (error) {
     return res
       .status(500)

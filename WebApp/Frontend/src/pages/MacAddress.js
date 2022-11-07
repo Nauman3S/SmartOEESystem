@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -26,39 +26,40 @@ const MacAddress = () => {
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [macList, setMacList] = useState(false);
   const { data: macAddress, loading } = useQuery(
-    authState.role === "client"
+    authState.role && authState.role === "client"
       ? "getAllMacAddress"
       : " getAdminUserAllMacAddress",
-    authState.role === "client" ? getAllMacAddress : getAdminUserAllMacAddress
+    authState?.role && authState?.role === "client"
+      ? getAllMacAddress
+      : getAdminUserAllMacAddress
   );
-  let adminUserMacAddressess = [];
-  if (authState.role === "admin") {
-    macAddress?.data?.Macaddressess[0]?.users.map((data, index) => {
-      return data.macAddress.map((mac, index) => {
-        return adminUserMacAddressess.push({
-          macAddress: mac.macAddress,
-          _id: data._id,
-        });
-      });
-    });
-  } else if (authState.role === "superAdmin") {
-    macAddress?.data?.Macaddressess.map((data, index) => {
-      return data.macAddress.map((mac, index) => {
-        return adminUserMacAddressess.push({
-          macAddress: mac.macAddress,
-          _id: data._id,
-        });
-      });
-    });
-  }
+
+  useEffect(() => {
+    if (!loading) {
+      if (authState?.role === "client") {
+        setMacList(macAddress?.data?.macAddressess.macAddress);
+      } else if (authState?.role === "admin") {
+        setMacList(macAddress?.data?.macAddressess);
+      }
+    }
+  }, [loading, macAddress, authState.role]);
   const columns = [
-    {
-      title: "MacAddress",
-      dataIndex: "macAddress",
-      key: "macAddress",
-      width: "32%",
-    },
+    authState?.role === "admin"
+      ? {
+          title: "MacAddress",
+          dataIndex: "macAddress",
+          key: "macAddress",
+          width: "32%",
+          render: (data) => data.macAddress,
+        }
+      : {
+          title: "MacAddress",
+          dataIndex: "macAddress",
+          key: "macAddress",
+          width: "32%",
+        },
 
     {
       title: "Delete",
@@ -69,7 +70,12 @@ const MacAddress = () => {
             title='Are you sure？'
             okText='Yes'
             cancelText='No'
-            onConfirm={() => handleDeleteMacAddress(data)}>
+            onConfirm={() =>
+              handleDeleteMacAddress(
+                authState?.role === "admin" ? data.macAddress : data,
+                data._id
+              )
+            }>
             <Button type='danger' className='tag-primary'>
               Delete
             </Button>
@@ -81,11 +87,13 @@ const MacAddress = () => {
 
   const queryClient = useQueryClient();
   const getDataMutation = useMutation(
-    authState.role === "client" ? getAllMacAddress : getAdminUserAllMacAddress,
+    authState?.role && authState?.role === "client"
+      ? getAllMacAddress
+      : getAdminUserAllMacAddress,
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(
-          authState.role === "client"
+          authState?.role && authState.role === "client"
             ? "getAllMacAddress"
             : " getAdminUserAllMacAddress"
         );
@@ -109,8 +117,8 @@ const MacAddress = () => {
     }
   };
 
-  const handleDeleteMacAddress = async (data) => {
-    const res = await removeMacAddress(data.macAddress, data._id);
+  const handleDeleteMacAddress = async (data, userid) => {
+    const res = await removeMacAddress(data.macAddress, userid);
     if (res.status === 200) {
       getDataMutation.mutate();
       message.success("MacAddress Deleted!");
@@ -145,11 +153,7 @@ const MacAddress = () => {
               <div className='table-responsive'>
                 <Table
                   columns={columns}
-                  dataSource={
-                    loading || authState.role === "client"
-                      ? macAddress?.data?.data?.macAddress
-                      : adminUserMacAddressess
-                  }
+                  dataSource={!loading && macList}
                   pagination={false}
                   className='ant-border-space'
                 />
@@ -161,7 +165,7 @@ const MacAddress = () => {
       <Modal
         title='Add New MacAddress'
         destroyOnClose={true}
-        visible={visible}
+        open={visible}
         footer={null}
         onCancel={() => setVisible(false)}
         confirmLoading={confirmLoading}>

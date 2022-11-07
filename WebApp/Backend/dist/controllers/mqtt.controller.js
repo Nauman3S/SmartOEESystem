@@ -20,12 +20,10 @@ const mqttClient = (0, mqtt_1.connect)();
 const postToMqtt = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         mqttClient.on("message", (topic, payload) => __awaiter(void 0, void 0, void 0, function* () {
-            if (!topic.includes("/logs")) {
-                let message = JSON.parse(payload);
-                console.log("Received Message:", topic, message);
-                let data = yield models_1.Mqtt.create(message);
-                data.save();
-            }
+            let message = JSON.parse(payload);
+            console.log("Received Message:", topic, message);
+            let data = yield models_1.Mqtt.create(message);
+            data.save();
         }));
         console.log("Data Saved");
     }
@@ -40,11 +38,10 @@ exports.postToMqtt = postToMqtt;
  * @param {Response} res - response object
  */
 const publishToMqtt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a;
     try {
         let { message } = req === null || req === void 0 ? void 0 : req.body;
-        const macAddress = `${(_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.macAddress}/client/${(_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.endPoint}`;
-        // message = JSON.stringify(message);
+        const macAddress = `${(_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.macAddress}/smartoee`;
         mqttClient.publish(macAddress, message, { qos: 0, retain: false }, (error) => {
             if (error) {
                 console.error(error);

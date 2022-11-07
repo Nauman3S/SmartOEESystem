@@ -12,6 +12,10 @@ router.get("/count", admin_controller_1.dashboardCounts);
  */
 router.get("/all-users", admin_controller_1.getAllUsers);
 /**
+ * Get All Users
+ */
+router.patch("/delete-user", admin_controller_1.deleteUser);
+/**
  * Get All Users Macaddress
  */
 router.get("/all-macAddress", admin_controller_1.getAllUsersMacaddress);
@@ -23,20 +27,4 @@ router.get("/all-mqttData", admin_controller_1.getAllUsersMqttData);
  * Get All Users Mqtt Data
  */
 router.get("/mqttData", admin_controller_1.getOneUsersMqttData);
-/**
- * @body
- * fullName-{string}
- * email - {string}
- * password - {string}
- * role = {string}
- */
-router.post("/signUp", admin_controller_1.signUp);
-/**
- * Get user of logged in admin
- */
-router.get("/users", admin_controller_1.getAdminUsers);
-/**
- * Delete User
- */
-router.patch("/user/delete", admin_controller_1.deleteAdminUsers);
 exports.default = router;

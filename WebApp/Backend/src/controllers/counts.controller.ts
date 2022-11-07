@@ -15,7 +15,6 @@ export const dashboardCounts = async (
       { $match: { _id: req?.user?._id } },
       { $project: { macAddress: { $size: "$macAddress" } } },
     ]);
-    console.log(macAddressCount);
 
     return res.status(200).json({ macAddressCount: macAddressCount[0] });
   } catch (error) {

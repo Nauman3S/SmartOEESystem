@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countRoutes = exports.adminRoutes = exports.mqttRoutes = exports.macAddressRoutes = exports.authRoutes = void 0;
+exports.energyCostRoutes = exports.sensorRoutes = exports.countRoutes = exports.adminRoutes = exports.mqttRoutes = exports.macAddressRoutes = exports.authRoutes = void 0;
 var auth_routes_1 = require("./auth.routes");
 Object.defineProperty(exports, "authRoutes", { enumerable: true, get: function () { return __importDefault(auth_routes_1).default; } });
 var macAddress_routes_1 = require("./macAddress.routes");
@@ -14,3 +14,7 @@ var admin_routes_1 = require("./admin.routes");
 Object.defineProperty(exports, "adminRoutes", { enumerable: true, get: function () { return __importDefault(admin_routes_1).default; } });
 var count_routes_1 = require("./count.routes");
 Object.defineProperty(exports, "countRoutes", { enumerable: true, get: function () { return __importDefault(count_routes_1).default; } });
+var sensor_routes_1 = require("./sensor.routes");
+Object.defineProperty(exports, "sensorRoutes", { enumerable: true, get: function () { return __importDefault(sensor_routes_1).default; } });
+var energyCost_routes_1 = require("./energyCost.routes");
+Object.defineProperty(exports, "energyCostRoutes", { enumerable: true, get: function () { return __importDefault(energyCost_routes_1).default; } });

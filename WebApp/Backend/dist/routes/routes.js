@@ -15,4 +15,8 @@ router.use("/mqtt", _1.mqttRoutes);
 router.use("/admin", auth_middleware_1.isAuthenticated, validator_middleware_1.isAdmin, _1.adminRoutes);
 //All Count Routes
 router.use("/count", auth_middleware_1.isAuthenticated, _1.countRoutes);
+//All Count Routes
+router.use("/sensor", auth_middleware_1.isAuthenticated, _1.sensorRoutes);
+//All Energy Cost Routes
+router.use("/energy", auth_middleware_1.isAuthenticated, _1.energyCostRoutes);
 exports.default = router;
