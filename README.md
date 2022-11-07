@@ -215,17 +215,51 @@ Here's the complete circuit diagram of the system.
 
 You can access the webapp with following test acccount credentials
 
-*   Email Address: `cavayin229@civikli.com`
-*   Password: `test`
+**Test Client**
+
+*   Email Address: `howto0158@gmail.com`
+*   Password: `1234`
+
+**Admin**
+
+*   Email Address: `admin@smartoee.com`
+*   Password: `12345678`
 
 ### Dashboard Screenshots
 
  ![SCR11](artwork/db1.png) - Sign-in
  ![SCR12](artwork/db2.png) - Sign-up
+
+ **Admin Dashboard**
+
  ![SCR13](artwork/db3.png) - Main Dashboard
- ![SCR14](artwork/db4.png) - Devices Page
- ![SCR15](artwork/db5.png) - Adding a new Device
- ![SCR16](artwork/db6.png) - User Profile
+ ![SCR14](artwork/db4.png) - Devices/Sensors Page
+ ![SCR15](artwork/db5.png) - Adding a new Device/Sensor
+ ![SCR16](artwork/db6.png) - Devices Management Page
+ ![SCR17](artwork/db7.png) - User Profile
+
+ **Client Dashboard**
+ ![SCR18](artwork/cdb1.png) - Main Client Dashboard
+ ![SCR19](artwork/cbd2.png) - Updating energy cost
+ ![SCR20](artwork/cdb3.png) - Devices Management
+ ![SCR21](artwork/cdb4.png) - Adding a new device
+ ![SCR22](artwork/cdb5.png) - User Profile
+
+
+### MQTT Details
+
+From Device the data should be published to the topic `smartoee/data/#` in the format below
+```json
+{
+  "macAddress": "FE064CSF",
+  "oee":"20",
+  "temperature":"30",
+  "humidity":"45",
+  "watts":"19"
+}
+```
+
+Any change detected in the values will generate an alarm(as set in the dashboard) and will publish the value on the topic `{MAC Address}/smartoee` of the device.
 
 
 ## List of Components <a name = "list"></a>
@@ -276,7 +310,7 @@ or
 
 ## 📹 Demo Videos <a name = "demo"></a>
 
-<!-- -   [Device Demo Video]() - OEE Device Demo Video -->
+-   [Device Demo Video](https://youtu.be/jB85V6VlB9w) - OEE Device Demo Video
 
 ## ✍️ Authors <a name = "authors"></a>
 
