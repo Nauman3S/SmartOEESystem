@@ -255,7 +255,7 @@ From Device the data should be published to the topic `smartoee/data/#` in the f
   "oee":"20",
   "temperature":"30",
   "humidity":"45",
-  "watts":"19"
+  "watts":"19",
 }
 ```
 
