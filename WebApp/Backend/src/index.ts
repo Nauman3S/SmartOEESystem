@@ -11,7 +11,7 @@ import path from "path";
 
 const app: Express = express();
 const PORT: number = parseInt(config.PORT as string, 10);
-
+console.log("confif ====>?",config.MONGO_URI);
 const server = http.createServer(app);
 
 //Initializing Middlewares
